@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+TROVE_ID=0e3a7593-1723-4366-8f78-8ac810b9f20f
+
+supernova local-cloudtest05  ha-add-acl $TROVE_ID 10.0.0.1
+supernova local-cloudtest05  ha-resize $TROVE_ID 17
+/home/vagrant/blast
+

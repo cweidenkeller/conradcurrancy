@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+ 
+import os
+import redis
+import threading
+import time
+ 
+CONCURRENCY = 100
+ 
+db = redis.StrictRedis(host='10.0.0.4', password='rVC2kTE4UBtqpxhgrR2vgxWdNkDdVAuynvbY')
+ 
+ 
+def insert_key(key_name):
+        print "INSERTING KEY %s" % key_name
+        db.set(key_name, key_name)
+ 
+ 
+print
+ 
+COUNTER = 500000
+ 
+ 
+while COUNTER > 0:
+    while threading.activeCount() > CONCURRENCY:
+            time.sleep(0.1)
+    key_derp = COUNTER
+    threading.Thread(target=insert_key, args=(key_derp,)).start()
+    COUNTER -= 1
+ 
+# Delete the container
+print "Blasted"
