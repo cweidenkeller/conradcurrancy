@@ -8,11 +8,13 @@ import time
 CONCURRENCY = 100
  
 db = redis.StrictRedis(host='10.0.0.4', password='rVC2kTE4UBtqpxhgrR2vgxWdNkDdVAuynvbY')
- 
+
+err_set = []
  
 def insert_key(key_name):
         print "INSERTING KEY %s" % key_name
-        db.set(key_name, key_name)
+        try: db.set(key_name, key_name)
+        except: err_set.append(key_name)
  
  
 print
@@ -27,5 +29,12 @@ while COUNTER > 0:
     threading.Thread(target=insert_key, args=(key_derp,)).start()
     COUNTER -= 1
  
+# Show keys that were not able to be set
+if len(err_set) > 0:
+    print "Encountered an error while settings keys:"
+    for key in err_set:
+        print "  {}".format(key)
+    print "Could not set {} keys.".format(len(err_set))
+
 # Delete the container
 print "Blasted"
